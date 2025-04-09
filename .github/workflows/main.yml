@@ -20,14 +20,20 @@ jobs:
           # Install yarn via brew
           brew install yarn
 
-      - name: Install Node.js 16.x and Yarn (for node-sass compatibility)
+      - name: Install Node.js 14.x and Yarn (for node-sass compatibility)
         run: |
-          # Install Node.js 16.x (latest stable)
+          # Install Node.js 14.x (latest stable)
           curl -sL https://deb.nodesource.com/setup_16.x | sudo -E bash -
           sudo apt-get install -y nodejs
           
           # Install yarn via apt (if not already done via brew)
           sudo apt-get install -y yarn
+
+      - name: Install Python 2
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y python2
+          sudo ln -s /usr/bin/python2 /usr/bin/python
 
       - name: Clone the frontend repo and install dependencies
         run: |
