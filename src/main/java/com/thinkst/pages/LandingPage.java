@@ -108,91 +108,91 @@ public class LandingPage extends Base {
         }
     }
 
-    public void clickSignUp(WebElement element){
+    public void clickSignUp(WebElement element) {
         wait.until(ExpectedConditions.elementToBeClickable(element)).click();
     }
 
-    public void clickSignInButton(){
+    public void clickSignInButton() {
         wait.until(ExpectedConditions.elementToBeClickable(signInButton)).click();
     }
 
-    public void clickSignIn(){
+    public void clickSignIn() {
         wait.until(ExpectedConditions.elementToBeClickable(signInLink)).click();
     }
 
-    public void enterUsername(String username){
+    public void enterUsername(String username) {
         wait.until(ExpectedConditions.elementToBeClickable(usernameTextBox)).sendKeys(username);
     }
 
-    public void enterEmailAddress(String email, WebElement element){
+    public void enterEmailAddress(String email, WebElement element) {
         wait.until(ExpectedConditions.elementToBeClickable(element)).sendKeys(email);
     }
 
-    public void enterPassword(String password,WebElement element){
+    public void enterPassword(String password, WebElement element) {
         wait.until(ExpectedConditions.elementToBeClickable(element)).sendKeys(password);
     }
 
-    public void clickNewArticle(){
+    public void clickNewArticle() {
         wait.until(ExpectedConditions.elementToBeClickable(newArticleLink)).click();
     }
 
-    public void enterArticleTitle(){
+    public void enterArticleTitle() {
         wait.until(ExpectedConditions.elementToBeClickable(articleTitleTextbox)).sendKeys(data.articleTitle);
     }
 
-    public void enterArticleAbout(){
+    public void enterArticleAbout() {
         wait.until(ExpectedConditions.elementToBeClickable(articleAboutTextbox)).sendKeys(data.articleAbout);
     }
 
-    public void enterArticleBody(){
+    public void enterArticleBody() {
         wait.until(ExpectedConditions.elementToBeClickable(articleBodyTextArea)).sendKeys(data.articleBody);
     }
 
-    public void enterArticleTag(){
+    public void enterArticleTag() {
         wait.until(ExpectedConditions.elementToBeClickable(articleTagTextbox)).sendKeys(data.articleTag);
     }
 
-    public void clickPublishArticleButton(){
+    public void clickPublishArticleButton() {
         wait.until(ExpectedConditions.elementToBeClickable(publishButton)).click();
     }
 
-    public void clickArticleLink(){
+    public void clickArticleLink() {
         wait.until(ExpectedConditions.elementToBeClickable(articleLink)).click();
     }
 
-    public void enterComment(){
+    public void enterComment() {
         wait.until(ExpectedConditions.elementToBeClickable(commentTextArea)).sendKeys(data.comment);
     }
 
-    public void clickPostComment(){
+    public void clickPostComment() {
         wait.until(ExpectedConditions.elementToBeClickable(postCommentButton)).click();
     }
 
-    public boolean isCommentPosted(){
+    public boolean isCommentPosted() {
         return wait.until(ExpectedConditions.visibilityOf(commentFooter)).getText().contains(data.comment);
     }
 
-    public void deleteComment(){
-       wait.until(ExpectedConditions.visibilityOf(deleteCommentIcon)).click();
+    public void deleteComment() {
+        wait.until(ExpectedConditions.visibilityOf(deleteCommentIcon)).click();
     }
 
-    public void clickSettings(){
-       wait.until(ExpectedConditions.visibilityOf(settingsButton)).click();
+    public void clickSettings() {
+        wait.until(ExpectedConditions.visibilityOf(settingsButton)).click();
     }
 
-    public void clickLogout(){
-       wait.until(ExpectedConditions.visibilityOf(logoutButton)).click();
+    public void clickLogout() {
+        wait.until(ExpectedConditions.visibilityOf(logoutButton)).click();
     }
 
-    public void clickLikeButton(){
-       wait.until(ExpectedConditions.visibilityOf(likeButton)).click();
+    public void clickLikeButton() {
+        wait.until(ExpectedConditions.visibilityOf(likeButton)).click();
     }
 
-    public boolean isValidationMessageDisplayed(){
+    public boolean isValidationMessageDisplayed() {
         return wait.until(ExpectedConditions.visibilityOf(errorLabel)).getText().contains("body User not found");
     }
 
-    public void enterTagTitle(){
-         wait.until(ExpectedConditions.visibilityOf(popularTagsSearchTextBox)).sendKeys("Test Automation");
+    public void enterTagTitle() {
+        wait.until(ExpectedConditions.visibilityOf(popularTagsSearchTextBox)).sendKeys("Test Automation");
     }
 }

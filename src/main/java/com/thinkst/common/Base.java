@@ -22,11 +22,9 @@ public class Base {
     Properties properties;
     protected String url;
 
-
     public static RemoteWebDriver getDriver() {
         return driver;
     }
-
 
     @Parameters("browser")
     @BeforeMethod
@@ -35,7 +33,6 @@ public class Base {
             ChromeOptions options = new ChromeOptions();
             options.addArguments("--headless=new");
             options.addArguments("--start-maximized");
-            //options.addArguments("--window-size=1920,1080");
             driver = new ChromeDriver(options);
 
         } else if (browser.equalsIgnoreCase("firefox")) {
