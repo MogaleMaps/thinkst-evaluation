@@ -8,28 +8,17 @@ jobs:
 
     steps:
       - uses: actions/checkout@v2 # Checkout the code
-      - name: Install dependencies for Python 2.7 and Node.js
+      - name: Install Brew (Linuxbrew) and Yarn
         run: |
-          # Install required dependencies for Python 2.7
-          sudo apt-get update
-          sudo apt-get install -y software-properties-common
-          sudo add-apt-repository ppa:deadsnakes/ppa
-          sudo apt-get update
-          sudo apt-get install -y python2.7 python2.7-dev
-          sudo update-alternatives --install /usr/bin/python python /usr/bin/python2.7 1
-          sudo update-alternatives --set python /usr/bin/python2.7
-      - name: Install Node.js 14.x (for node-sass compatibility)
-        run: |
-          curl -sL https://deb.nodesource.com/setup_14.x | sudo -E bash -
-          sudo apt-get install -y nodejs
-      - name: Set up JDK 1.8
-        uses: actions/setup-java@v1
-        with:
-          java-version: 1.8
-      - name: Install Google Chrome
-        run: |
-          chmod +x ./scripts/InstallChrome.sh
-          ./scripts/InstallChrome.sh
+          # Install Linuxbrew (Homebrew) if not already installed
+          /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
+          
+          # Add Homebrew to PATH
+          echo 'export PATH="/home/linuxbrew/.linuxbrew/bin:$PATH"' >> ~/.bashrc
+          source ~/.bashrc
+          
+          # Install yarn via brew
+          brew install yarn
       - name: Clone the frontend repo and install dependencies
         run: |
           git clone https://x-access-token:${{ secrets.Thinkst_PAT }}@github.com/thinkst-nick/vue-realworld-example-app-mogale.git
@@ -40,6 +29,16 @@ jobs:
         run: |
           cd vue-realworld-example-app
           NODE_OPTIONS=--openssl-legacy-provider yarn serve &
+
+      - name: Set up JDK 1.8
+        uses: actions/setup-java@v1
+        with:
+          java-version: 1.8
+      - name: Install Google Chrome
+        run: |
+          chmod +x ./scripts/InstallChrome.sh
+          ./scripts/InstallChrome.sh
+
       - name: Grant execute permission for gradlew
         run: chmod +x gradlew
       - name: Build with Gradle
