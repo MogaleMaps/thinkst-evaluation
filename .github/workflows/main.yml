@@ -40,11 +40,13 @@ jobs:
         run: yarn install --ignore-scripts
 
 
-      - name: Remove node-sass and add sass
+      - name: Patch node-sass with sass
         run: |
-          yarn remove node-sass
-          yarn add sass  
-          yarn install
+          yarn add sass
+
+      - name: Install dependencies
+        run: |
+          yarn install 
 
       - name: Run the server (in background)
         run: |
