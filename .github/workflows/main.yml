@@ -48,11 +48,11 @@ jobs:
         run: |
           yarn cache clean
           yarn add cross-env --dev
-          yarn install 
 
       - name: Run the server (in background)
         run: |
           cd vue-realworld-example-app
+          yarn install 
           NODE_OPTIONS=--openssl-legacy-provider yarn serve &
 
       - name: Set up JDK 11
