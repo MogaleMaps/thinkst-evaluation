@@ -4,19 +4,50 @@ on: [push]
 
 jobs:
   build:
-    runs-on: ubuntu-latest # Using linux machine
+    runs-on: ubuntu-latest
 
     steps:
-    - uses: actions/checkout@v2 # Checkout the code
-    - name: Set up JDK 11
-      uses: actions/setup-java@v1 # Setup JAVA
-      with:
-        java-version: 11
-    - name: Install Google Chrome # Using shell script to install Google Chrome
-      run: |
-       chmod +x ./scripts/InstallChrome.sh
-        ./scripts/InstallChrome.sh
-    - name: Grant execute permission for gradlew
-      run: chmod +x gradlew # give permission to Gradle to run the commands
-    - name: Build with Gradle
-      run: ./gradlew test --info # Run our tests using Gradle
+      - name: Checkout code
+        uses: actions/checkout@v2
+
+      # ✅ Install Yarn
+      - name: Install Yarn
+        run: |
+          curl -sS https://dl.yarnpkg.com/debian/pubkey.gpg | sudo apt-key add -
+          echo "deb https://dl.yarnpkg.com/debian/ stable main" | sudo tee /etc/apt/sources.list.d/yarn.list
+          sudo apt update && sudo apt install -y yarn
+
+      # ✅ Clone your frontend repo
+      - name: Clone Vue.js Frontend
+        run: |
+          git clone https://x-access-token:${{ secrets.Thinkst_PAT }}@github.com/thinkst-nick/vue-realworld-example-app-mogale.git
+          mv vue-realworld-example-app-mogale vue-realworld-example-app
+          cd vue-realworld-example-app
+          yarn install
+
+      # ✅ Start frontend server in background
+      - name: Start frontend server
+        run: |
+          cd vue-realworld-example-app
+          nohup bash -c "NODE_OPTIONS=--openssl-legacy-provider yarn serve &"
+          sleep 15 # wait for server to start
+
+      # ✅ Install JDK
+      - name: Set up JDK 11
+        uses: actions/setup-java@v1
+        with:
+          java-version: 11
+
+      # ✅ Install Chrome
+      - name: Install Google Chrome
+        run: |
+          chmod +x ./scripts/InstallChrome.sh
+          ./scripts/InstallChrome.sh
+
+      # ✅ Grant Gradle permission
+      - name: Grant execute permission for gradlew
+        run: chmod +x gradlew
+
+      # ✅ Run your Selenium tests
+      - name: Run tests with Gradle
+        run: ./gradlew test --info
