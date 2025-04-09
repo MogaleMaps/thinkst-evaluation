@@ -46,6 +46,7 @@ jobs:
 
       - name: Install dependencies
         run: |
+          yarn add cross-env --dev
           yarn install 
 
       - name: Run the server (in background)
