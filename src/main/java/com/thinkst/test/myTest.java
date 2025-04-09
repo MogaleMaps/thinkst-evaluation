@@ -118,7 +118,7 @@ public class myTest extends Base {
         landingPage.enterTagTitle();
     }
 
-    @Test(enabled = false)
+    @Test
     @Description("A security test- Verify that users are redirected to login page when attempting to like a post")
     public void redirectUserToLoginWhenLikingPost() {
         LandingPage landingPage = new LandingPage(getDriver());
