@@ -39,16 +39,13 @@ jobs:
       - name: Initial install to create lockfile
         run: yarn install --ignore-scripts
 
-      - name: Install dependencies
-        run: |
-          yarn cache clean
-          yarn add cross-env --dev
-
       - name: Run the server (in background)
         run: |
           cd vue-realworld-example-app
+          yarn cache clean
           yarn install 
-          yarn remove node-sass
+          yarn add sass
+          yarn add cross-env --dev
           NODE_OPTIONS=--openssl-legacy-provider yarn serve &
 
       - name: Set up JDK 11
