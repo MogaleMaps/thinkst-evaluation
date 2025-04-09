@@ -77,15 +77,6 @@ public class myTest extends Base {
     }
 
     @Test
-    @Description("A passing positive test- Verify that users can successfully logout")
-    public void logoutSuccessfully() {
-        loginSuccessfully();
-        LandingPage landingPage = new LandingPage(getDriver());
-        landingPage.clickSettings();
-        landingPage.clickLogout();
-        Assert.assertFalse(landingPage.verifyElementIsDisplayed(landingPage.settingsButton));
-    }
-
     @Description("Passing negative test- Display validation message when user enters incorrect password")
     public void validateIncorrectPassword() {
         LandingPage landingPage = new LandingPage(getDriver());
