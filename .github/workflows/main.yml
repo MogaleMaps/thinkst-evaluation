@@ -1,53 +1,42 @@
-name: Automation CI - Thinkst
+name: Automation CI
 
 on: [push]
 
 jobs:
   build:
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-latest # Using Linux machine
 
     steps:
-      - name: Checkout code
-        uses: actions/checkout@v2
-
-      # ✅ Install Yarn
-      - name: Install Yarn
+      - uses: actions/checkout@v2 # Checkout the code
+      - name: Set up Python 2
         run: |
-          curl -sS https://dl.yarnpkg.com/debian/pubkey.gpg | sudo apt-key add -
-          echo "deb https://dl.yarnpkg.com/debian/ stable main" | sudo tee /etc/apt/sources.list.d/yarn.list
-          sudo apt update && sudo apt install -y yarn
-
-      # ✅ Clone your frontend repo
-      - name: Clone Vue.js Frontend
+          sudo apt-get update
+          sudo apt-get install -y python2
+          sudo update-alternatives --install /usr/bin/python python /usr/bin/python2 1
+          sudo update-alternatives --set python /usr/bin/python2
+      - name: Install Node.js 14.x (for node-sass compatibility)
+        run: |
+          curl -sL https://deb.nodesource.com/setup_14.x | sudo -E bash -
+          sudo apt-get install -y nodejs
+      - name: Set up JDK 1.8
+        uses: actions/setup-java@v1
+        with:
+          java-version: 1.8
+      - name: Install Google Chrome
+        run: |
+          chmod +x ./scripts/InstallChrome.sh
+          ./scripts/InstallChrome.sh
+      - name: Clone the frontend repo and install dependencies
         run: |
           git clone https://x-access-token:${{ secrets.Thinkst_PAT }}@github.com/thinkst-nick/vue-realworld-example-app-mogale.git
           mv vue-realworld-example-app-mogale vue-realworld-example-app
           cd vue-realworld-example-app
           yarn install
-
-      # ✅ Start frontend server in background
-      - name: Start frontend server
+      - name: Run the server (in background)
         run: |
           cd vue-realworld-example-app
-          nohup bash -c "NODE_OPTIONS=--openssl-legacy-provider yarn serve &"
-          sleep 15 # wait for server to start
-
-      # ✅ Install JDK
-      - name: Set up JDK 11
-        uses: actions/setup-java@v1
-        with:
-          java-version: 11
-
-      # ✅ Install Chrome
-      - name: Install Google Chrome
-        run: |
-          chmod +x ./scripts/InstallChrome.sh
-          ./scripts/InstallChrome.sh
-
-      # ✅ Grant Gradle permission
+          NODE_OPTIONS=--openssl-legacy-provider yarn serve &
       - name: Grant execute permission for gradlew
         run: chmod +x gradlew
-
-      # ✅ Run your Selenium tests
-      - name: Run tests with Gradle
-        run: ./gradlew test --info
+      - name: Build with Gradle
+        run: ./gradlew test --info # Run tests using Gradle
