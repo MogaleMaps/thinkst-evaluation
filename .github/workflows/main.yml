@@ -29,12 +29,6 @@ jobs:
           # Install yarn via apt (if not already done via brew)
           sudo apt-get install -y yarn
 
-      - name: Install Python 2
-        run: |
-          sudo apt-get update
-          sudo apt-get install -y python2
-          sudo ln -s /usr/bin/python2 /usr/bin/python
-
       - name: Clone the frontend repo and install dependencies
         run: |
           git clone https://x-access-token:${{ secrets.Thinkst_PAT }}@github.com/thinkst-nick/vue-realworld-example-app-mogale.git
