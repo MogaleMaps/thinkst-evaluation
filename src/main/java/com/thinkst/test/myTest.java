@@ -39,7 +39,7 @@ public class myTest extends Base {
         Assert.assertTrue(landingPage.verifyElementIsDisplayed(landingPage.settingsButton));
     }
 
-    @Test(enabled = false)
+    @Test
     @Description("A passing positive test- Verify registered users can successfully login")
     public void loginSuccessfully()  {
         LandingPage landingPage = new LandingPage(getDriver());

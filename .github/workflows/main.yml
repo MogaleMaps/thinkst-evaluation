@@ -73,3 +73,11 @@ jobs:
           name: allure-report
           path: build/reports/allure-report/allureReport
           overwrite: true
+
+      - name: Test Report
+        uses: dorny/test-reporter@v2
+        if: success() || failure()    # run this step even if previous step failed
+        with:
+          name: JEST Tests            # Name of the check run which will be created
+          path: $GITHUB_WORKSPACE/build/test-results/*.xml    # Path to test results
+          reporter: jest-junit        # Format of test results
