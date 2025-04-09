@@ -73,14 +73,3 @@ jobs:
           name: allure-report
           path: build/reports/allure-report/allureReport
           overwrite: true
-
-      - name: Display test results
-        run: |
-          ROOT_DIR=$(pwd)  # Get the current working directory (absolute path)
-          FULL_PATH="$ROOT_DIR/build/test-results"  # Combine it with the relative path
-          if ls $FULL_PATH/*.xml 1> /dev/null 2>&1; then
-            echo "Test reports found, displaying test results:"
-            cat $FULL_PATH/*.xml  # Displays all XML files found in the directory
-          else
-            echo "No test reports found"
-          fi

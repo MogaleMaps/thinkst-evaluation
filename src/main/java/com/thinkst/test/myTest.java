@@ -26,7 +26,8 @@ public class myTest extends Base {
         Assert.assertTrue(landingPage.verifyElementIsDisplayed(landingPage.signInLink));
         Assert.assertTrue(landingPage.verifyElementIsDisplayed(landingPage.signUpLink));
     }
-    @Test(enabled = false)
+
+    @Test
     @Description("A passing positive test- Verify that users can successfully sign up")
     public void signUpSuccessfully()  {
         LandingPage landingPage = new LandingPage(getDriver());
