@@ -124,6 +124,6 @@ public class myTest extends Base {
     public void redirectUserToLoginWhenLikingPost() {
         LandingPage landingPage = new LandingPage(getDriver());
         landingPage.clickLikeButton();
-        Assert.assertTrue(getDriver().getCurrentUrl().contains(data.baseUrl+"#/login"));
+        Assert.assertTrue(getDriver().getCurrentUrl().contains(url +"#/login"));
     }
 }

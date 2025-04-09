@@ -16,7 +16,6 @@ public class TestData {
 
     public String articleTag = "Test Automation " + getRandomAlphanumeric();
     public String comment = "I don't have much to say here";
-    public String baseUrl = "http://localhost:8080/";
 
     public static String getRandomAlphanumeric() {
         String chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
