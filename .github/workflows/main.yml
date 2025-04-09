@@ -79,7 +79,7 @@ jobs:
         run: |
           if [[ -f "build/test-results/*.xml" ]]; then
           echo "Test report found, displaying test results"
-          cat build/test-results/test-report.xml  # or use a tool to parse and display
+          cat build/test-results/*.xml  # or use a tool to parse and display
           else
           echo "No test report found"
           fi
