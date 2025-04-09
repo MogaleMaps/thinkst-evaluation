@@ -39,11 +39,6 @@ jobs:
       - name: Initial install to create lockfile
         run: yarn install --ignore-scripts
 
-
-      - name: Patch node-sass with sass
-        run: |
-          yarn add sass
-
       - name: Install dependencies
         run: |
           yarn cache clean
@@ -53,6 +48,8 @@ jobs:
         run: |
           cd vue-realworld-example-app
           yarn install 
+          yarn remove node-sass
+          yarn add sass
           NODE_OPTIONS=--openssl-legacy-provider yarn serve &
 
       - name: Set up JDK 11
