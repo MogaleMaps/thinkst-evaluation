@@ -4,11 +4,11 @@ on: [ push ]
 
 jobs:
   build:
-    runs-on: ubuntu-latest # Using Linux machine
+    runs-on: ubuntu-latest
 
     steps:
-      - uses: actions/checkout@v2 # Checkout the code
-      - name: Install Brew (Linuxbrew) and Yarn
+      - uses: actions/checkout@v2
+      - name: Install Brew and Yarn
         run: |
           # Install Linuxbrew (Homebrew) if not already installed
           /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
@@ -20,7 +20,7 @@ jobs:
           # Install yarn via brew
           brew install yarn
 
-      - name: Install Node.js 14.x and Yarn (for node-sass compatibility)
+      - name: Install Node.js 14.x and Yarn
         run: |
           # Install Node.js 14.x (latest stable)
           curl -sL https://deb.nodesource.com/setup_16.x | sudo -E bash -
@@ -29,17 +29,16 @@ jobs:
           # Install yarn via apt (if not already done via brew)
           sudo apt-get install -y yarn
 
-      - name: Clone the frontend repo and install dependencies
+      - name: Clone the frontend repo
         run: |
           git clone https://x-access-token:${{ secrets.Thinkst_PAT }}@github.com/thinkst-nick/vue-realworld-example-app-mogale.git
           mv vue-realworld-example-app-mogale vue-realworld-example-app
           cd vue-realworld-example-app
 
-      # 👇 Run install once to generate lockfile
       - name: Initial install to create lockfile
         run: yarn install --ignore-scripts
 
-      - name: Run the server (in background)
+      - name: Run the server
         run: |
           cd vue-realworld-example-app
           yarn cache clean
@@ -61,7 +60,7 @@ jobs:
       - name: Grant execute permission for gradlew
         run: chmod +x gradlew
 
-      - name: Run Tests with Gradle
+      - name: Run Tests
         run: ./gradlew test --info
 
       - name: Generate Allure report
@@ -77,9 +76,11 @@ jobs:
 
       - name: Display test results
         run: |
-          if [[ -f "build/test-results/*.xml" ]]; then
-          echo "Test report found, displaying test results"
-          cat build/test-results/*.xml  # or use a tool to parse and display
+          ROOT_DIR=$(pwd)  # Get the current working directory (absolute path)
+          FULL_PATH="$ROOT_DIR/build/test-results"  # Combine it with the relative path
+          if ls $FULL_PATH/*.xml 1> /dev/null 2>&1; then
+            echo "Test reports found, displaying test results:"
+            cat $FULL_PATH/*.xml  # Displays all XML files found in the directory
           else
-          echo "No test report found"
+            echo "No test reports found"
           fi
