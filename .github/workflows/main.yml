@@ -34,7 +34,13 @@ jobs:
           git clone https://x-access-token:${{ secrets.Thinkst_PAT }}@github.com/thinkst-nick/vue-realworld-example-app-mogale.git
           mv vue-realworld-example-app-mogale vue-realworld-example-app
           cd vue-realworld-example-app
+
+      - name: Remove node-sass and add sass
+        run: |
+          yarn remove node-sass
+          yarn add sass  
           yarn install
+
       - name: Run the server (in background)
         run: |
           cd vue-realworld-example-app
