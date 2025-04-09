@@ -73,9 +73,3 @@ jobs:
           name: allure-report
           path: build/reports/allure-report/allureReport
           overwrite: true
-
-      # Step to serve allure report
-      - name: View Test Results
-        run: |
-          # Run Allure report server to view the results
-          ./allure serve allure-results &
