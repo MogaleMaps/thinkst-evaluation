@@ -35,6 +35,11 @@ jobs:
           mv vue-realworld-example-app-mogale vue-realworld-example-app
           cd vue-realworld-example-app
 
+      # 👇 Run install once to generate lockfile
+      - name: Initial install to create lockfile
+        run: yarn install --ignore-scripts
+
+
       - name: Remove node-sass and add sass
         run: |
           yarn remove node-sass
