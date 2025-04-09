@@ -1,4 +1,4 @@
-name: Automation CI
+name: Automation CI - Thinkst
 
 on: [push]
 
