@@ -22,14 +22,17 @@ jobs:
 
       - name: Install Python 2 and Node 14.x for node-sass compatibility
         run: |
-          # Install Python 2.7
+          # Add deadsnakes PPA to install Python 2.7
+          sudo add-apt-repository ppa:deadsnakes/ppa
           sudo apt-get update
+          
+          # Install Python 2.7 and development libraries
           sudo apt-get install -y python2.7 python2.7-dev
           
           # Set Python 2.7 as default for node-gyp
           sudo update-alternatives --install /usr/bin/python python /usr/bin/python2.7 1
           sudo update-alternatives --set python /usr/bin/python2.7
-          
+
           # Install build-essential dependencies
           sudo apt-get install -y build-essential
           
