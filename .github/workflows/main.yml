@@ -74,3 +74,12 @@ jobs:
           name: allure-report
           path: build/reports/allure-report/allureReport
           overwrite: true
+
+      - name: Display test results
+        run: |
+          if [[ -f "build/test-results/test-report.xml" ]]; then
+          echo "Test report found, displaying test results"
+          cat build/test-results/test-report.xml  # or use a tool to parse and display
+          else
+          echo "No test report found"
+          fi
