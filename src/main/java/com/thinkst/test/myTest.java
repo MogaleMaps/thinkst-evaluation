@@ -64,7 +64,7 @@ public class myTest extends Base {
         Assert.assertTrue(landingPage.verifyElementIsDisplayed(landingPage.deleteArticleButton));
     }
 
-    @Test(enabled = false)
+    @Test
     @Description("A passing positive test- Verify logged-in users can successfully post a comment on an article")
     public void postCommentSuccessfully() {
         loginSuccessfully();
