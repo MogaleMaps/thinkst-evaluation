@@ -50,7 +50,7 @@ public class myTest extends Base {
         Assert.assertTrue(landingPage.verifyElementIsDisplayed(landingPage.settingsButton));
     }
 
-    @Test(enabled = false)
+    @Test
     @Description("A passing positive test- Verify logged-in users can successfully publish a article")
     public void publishNewArticleSuccessfully() throws InterruptedException {
         loginSuccessfully();
