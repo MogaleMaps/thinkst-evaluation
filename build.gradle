@@ -1,5 +1,6 @@
 plugins {
     id("java")
+    id "io.qameta.allure" version "2.9.6"
 }
 
 
@@ -15,6 +16,10 @@ repositories {
     mavenCentral()
 }
 
+allure {
+    autoconfigure = true
+}
+
 dependencies {
     implementation 'org.testng:testng:7.1.0'
     testImplementation(platform('org.junit:junit-bom:5.9.1'))
@@ -24,7 +29,10 @@ dependencies {
     testImplementation 'org.testng:testng:7.10.2'
     implementation("io.qameta.allure:allure-maven:2.8")
     implementation("org.apache.logging.log4j:log4j-slf4j-impl:2.1")
+    implementation group: 'io.qameta.allure', name: 'allure-testng', version: '2.13.3'
 }
+
+testReportDirName = "${buildDir}/test-output"
 
 sourceSets {
     test {
@@ -36,8 +44,9 @@ sourceSets {
 
 
 test {
-
-    useTestNG()
+    useTestNG() {
+        useDefaultListeners = true
+    }
 
     def browser = project.hasProperty("browser") ? project.property("browser") : "chrome"
     systemProperty "browser", browser
