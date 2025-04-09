@@ -1,6 +1,6 @@
 name: Automation CI
 
-on: [push]
+on: [ push ]
 
 jobs:
   build:
@@ -13,9 +13,9 @@ jobs:
           # Install Linuxbrew (Homebrew) if not already installed
           /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
           
-          # Add Homebrew to PATH
-          echo 'export PATH="/home/linuxbrew/.linuxbrew/bin:$PATH"' >> ~/.bashrc
-          source ~/.bashrc
+          # Add Homebrew to PATH immediately
+          echo 'eval "$(/home/linuxbrew/.linuxbrew/bin/brew shellenv)"' >> ~/.bashrc
+          eval "$(/home/linuxbrew/.linuxbrew/bin/brew shellenv)"
           
           # Install yarn via brew
           brew install yarn
