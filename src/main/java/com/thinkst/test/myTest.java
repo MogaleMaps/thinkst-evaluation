@@ -87,7 +87,7 @@ public class myTest extends Base {
         Assert.assertTrue(landingPage.isValidationMessageDisplayed());
     }
 
-    @Test(enabled = false)
+    @Test
     @Description("Passing negative test- Display validation message when user enters incorrect username")
     public void validateIncorrectUsername() {
         LandingPage landingPage = new LandingPage(getDriver());

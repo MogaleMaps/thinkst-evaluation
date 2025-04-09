@@ -74,10 +74,12 @@ jobs:
           path: build/reports/allure-report/allureReport
           overwrite: true
 
-      - name: Test Report
-        uses: dorny/test-reporter@v2
-        if: success() || failure()    # run this step even if previous step failed
-        with:
-          name: JEST Tests            # Name of the check run which will be created
-          path: build/test-results/test/*.xml   # Path to test results
-          reporter: jest-junit        # Format of test results
+
+      - name: Display test results
+        run: |
+          if ls build/test-results/test/*.xml 1> /dev/null 2>&1; then
+            echo "Test reports found, displaying test results:"
+            cat build/test-results/test/*.xml  # Displays all XML files found in the directory
+          else
+            echo "No test reports found"
+          fi
