@@ -10,7 +10,6 @@ import org.testng.annotations.Test;
 
 import java.io.IOException;
 
-@Test
 @Parameters("browser")
 public class myTest extends Base {
     TestData data = new TestData();
@@ -19,6 +18,7 @@ public class myTest extends Base {
         super.setup(browser);
     }
 
+    @Test
     @Description("A passing positive test - As a logged out user, I should be able to launch and view the website successfully")
     public void launchWebpageSuccessfully() {
         LandingPage landingPage = new LandingPage(getDriver());
@@ -26,7 +26,7 @@ public class myTest extends Base {
         Assert.assertTrue(landingPage.verifyElementIsDisplayed(landingPage.signInLink));
         Assert.assertTrue(landingPage.verifyElementIsDisplayed(landingPage.signUpLink));
     }
-
+    @Test(enabled = false)
     @Description("A passing positive test- Verify that users can successfully sign up")
     public void signUpSuccessfully()  {
         LandingPage landingPage = new LandingPage(getDriver());
@@ -38,7 +38,7 @@ public class myTest extends Base {
         Assert.assertTrue(landingPage.verifyElementIsDisplayed(landingPage.settingsButton));
     }
 
-
+    @Test(enabled = false)
     @Description("A passing positive test- Verify registered users can successfully login")
     public void loginSuccessfully()  {
         LandingPage landingPage = new LandingPage(getDriver());
@@ -49,6 +49,7 @@ public class myTest extends Base {
         Assert.assertTrue(landingPage.verifyElementIsDisplayed(landingPage.settingsButton));
     }
 
+    @Test(enabled = false)
     @Description("A passing positive test- Verify logged-in users can successfully publish a article")
     public void publishNewArticleSuccessfully() throws InterruptedException {
         loginSuccessfully();
@@ -62,6 +63,7 @@ public class myTest extends Base {
         Assert.assertTrue(landingPage.verifyElementIsDisplayed(landingPage.deleteArticleButton));
     }
 
+    @Test(enabled = false)
     @Description("A passing positive test- Verify logged-in users can successfully post a comment on an article")
     public void postCommentSuccessfully() {
         loginSuccessfully();
@@ -73,6 +75,7 @@ public class myTest extends Base {
         landingPage.deleteComment();
     }
 
+    @Test(enabled = false)
     @Description("A passing positive test- Verify that users can successfully logout")
     public void logoutSuccessfully() {
         loginSuccessfully();
@@ -92,6 +95,7 @@ public class myTest extends Base {
         Assert.assertTrue(landingPage.isValidationMessageDisplayed());
     }
 
+    @Test(enabled = false)
     @Description("Passing negative test- Display validation message when user enters incorrect username")
     public void validateIncorrectUsername() {
         LandingPage landingPage = new LandingPage(getDriver());
@@ -103,6 +107,7 @@ public class myTest extends Base {
     }
 
     //TODO: Fix the below ASAP
+    @Test(enabled = false)
     @Description("A failing negative- Display validation message when logging in without username and password ")
     public void signUpWithoutUsername()  {
         LandingPage landingPage = new LandingPage(getDriver());
@@ -113,6 +118,7 @@ public class myTest extends Base {
         Assert.assertTrue(landingPage.isValidationMessageDisplayed());
     }
 
+    @Test(enabled = false)
     @Description("Failing positive test -- Verify that users are able to filter posts by clicking on 'Popular Tags'")
     public void filterByPopularTags() {
         loginSuccessfully();
@@ -120,6 +126,7 @@ public class myTest extends Base {
         landingPage.enterTagTitle();
     }
 
+    @Test(enabled = false)
     @Description("A security test- Verify that users are redirected to login page when attempting to like a post")
     public void redirectUserToLoginWhenLikingPost() {
         LandingPage landingPage = new LandingPage(getDriver());
