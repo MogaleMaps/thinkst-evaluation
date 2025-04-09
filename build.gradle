@@ -16,12 +16,23 @@ dependencies {
     implementation 'org.seleniumhq.selenium:selenium-java:4.23.0'
     implementation 'org.seleniumhq.selenium:selenium-remote-driver:4.23.0'
     testImplementation 'org.testng:testng:7.10.2'
+    implementation("io.qameta.allure:allure-maven:2.8")
+    implementation("org.apache.logging.log4j:log4j-slf4j-impl:2.1")
 }
 
+sourceSets {
+    test {
+        java {
+            srcDirs = ['.']
+        }
+    }
+}
+
+
 test {
+
     useTestNG()
 
-    // ✅ This checks if 'browser' was passed via command line, defaults to chrome if not
     def browser = project.hasProperty("browser") ? project.property("browser") : "chrome"
     systemProperty "browser", browser
 
