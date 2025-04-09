@@ -77,7 +77,7 @@ jobs:
 
       - name: Display test results
         run: |
-          if [[ -f "build/test-results/test-report.xml" ]]; then
+          if [[ -f "build/test-results/*.xml" ]]; then
           echo "Test report found, displaying test results"
           cat build/test-results/test-report.xml  # or use a tool to parse and display
           else
