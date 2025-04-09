@@ -49,7 +49,6 @@ jobs:
           cd vue-realworld-example-app
           yarn install 
           yarn remove node-sass
-          yarn add sass
           NODE_OPTIONS=--openssl-legacy-provider yarn serve &
 
       - name: Set up JDK 11
