@@ -33,7 +33,7 @@ public class Base {
     public void setup(@Optional("chrome") String browser) throws IOException {
         if (browser.equalsIgnoreCase("chrome")) {
             ChromeOptions options = new ChromeOptions();
-            //options.addArguments("--headless=new");
+            options.addArguments("--headless=new");
             options.addArguments("--start-maximized");
             //options.addArguments("--window-size=1920,1080");
             driver = new ChromeDriver(options);
