@@ -76,7 +76,7 @@ public class myTest extends Base {
         landingPage.deleteComment();
     }
 
-    @Test(enabled = false)
+    @Test
     @Description("A passing positive test- Verify that users can successfully logout")
     public void logoutSuccessfully() {
         loginSuccessfully();
