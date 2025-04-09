@@ -19,6 +19,24 @@ jobs:
           
           # Install yarn via brew
           brew install yarn
+
+      - name: Install Python 2 and Node 14.x for node-sass compatibility
+        run: |
+          # Install Python 2.7
+          sudo apt-get update
+          sudo apt-get install -y python2.7 python2.7-dev
+          
+          # Set Python 2.7 as default for node-gyp
+          sudo update-alternatives --install /usr/bin/python python /usr/bin/python2.7 1
+          sudo update-alternatives --set python /usr/bin/python2.7
+          
+          # Install build-essential dependencies
+          sudo apt-get install -y build-essential
+          
+          # Install Node.js 14.x (node-sass compatibility)
+          curl -sL https://deb.nodesource.com/setup_14.x | sudo -E bash -
+          sudo apt-get install -y nodejs
+
       - name: Clone the frontend repo and install dependencies
         run: |
           git clone https://x-access-token:${{ secrets.Thinkst_PAT }}@github.com/thinkst-nick/vue-realworld-example-app-mogale.git
