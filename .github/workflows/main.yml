@@ -66,7 +66,7 @@ jobs:
       - name: Send Slack notification on test result (success or failure)
         run: |
           if [ $? -eq 0 ]; then
-            STATUS="Tests passed!"
+            STATUS="Front End automation ->  Tests passed!"
           else
             STATUS="Tests failed! Please check the details in the workflow logs."
           fi
