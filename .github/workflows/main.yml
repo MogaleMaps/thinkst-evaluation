@@ -74,10 +74,15 @@ jobs:
           path: build/reports/allure-report/allureReport
           overwrite: true
 
-      - name: Test Report
-        uses: dorny/test-reporter@v2
-        if: success() || failure()    # run this step even if previous step failed
-        with:
-          name: JEST Tests            # Name of the check run which will be created
-          path: build/test-output/test/*.xml    # Path to test results
-          reporter: jest-junit
+      # Install Allure commandline tool (to serve the HTML report)
+      - name: Install Allure commandline
+        run: |
+          wget https://github.com/allure-framework/allure2/releases/download/2.16.1/allure-2.16.1.tgz
+          tar -zxvf allure-2.16.1.tgz
+          sudo mv allure-2.16.1 /opt/allure
+          sudo ln -s /opt/allure/bin/allure /usr/local/bin/allure
+
+      # Serve the Allure report (this will generate a URL to access the report)
+      - name: Serve Allure Report
+        run: |
+          allure serve build/reports/allure-report
