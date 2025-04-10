@@ -85,4 +85,4 @@ jobs:
       # Serve the Allure report (this will generate a URL to access the report)
       - name: Serve Allure Report
         run: |
-          allure serve build/reports/allure-report
+          allure serve build/reports/allure-report &
