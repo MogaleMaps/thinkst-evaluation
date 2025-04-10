@@ -63,6 +63,15 @@ jobs:
       - name: Run Tests
         run: ./gradlew test --info || true
 
+      - name: Send Slack notification on test result (success or failure)
+        run: |
+            if [ $? -eq 0 ]; then
+             STATUS="Tests passed!"
+            else
+              STATUS="Tests failed! Please check the details in the workflow logs."
+            fi
+            curl -X POST -H 'Content-type: application/json' --data "{\"text\":\"${STATUS}\"}" https://hooks.slack.com/services/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
+
       - name: Generate Allure report
         run: ./gradlew allureReport
 
@@ -80,3 +89,4 @@ jobs:
         with:
           files: |
             build/test-results/test/*.xml
+
