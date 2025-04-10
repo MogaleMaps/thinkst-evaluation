@@ -62,14 +62,14 @@ jobs:
 
       - name: Run Tests
         run: |
-          ./gradlew test --info || true
-           # Check the status of the previous command
+          ./gradlew test --info || true  # Continue even if tests fail
           if [ $? -ne 0 ]; then
-          echo "Tests failed"
-          echo "test_status=failed" >> $GITHUB_ENV  # Set environment variable to mark failure
+            echo "Tests failed"
+            echo "test_status=failed" >> $GITHUB_ENV  # Set failure flag
+            exit 1  # Mark this step as failed
           else
-          echo "Tests passed"
-          echo "test_status=passed" >> $GITHUB_ENV  # Set environment variable to mark success
+            echo "Tests passed"
+            echo "test_status=passed" >> $GITHUB_ENV  # Set success flag
           fi
 
       - name: Send Slack notification on test result (success or failure)
