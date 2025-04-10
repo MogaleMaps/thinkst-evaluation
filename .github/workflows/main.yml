@@ -60,30 +60,20 @@ jobs:
       - name: Grant execute permission for gradlew
         run: chmod +x gradlew
 
-      - name: Run Tests and Capture Logs
+      - name: Run Tests
         run: |
-          # Run the tests and capture the output in a log file
-          ./gradlew test --info > build/test-logs/test.log 2>&1 || true  # Capture both stdout and stderr
-          
-          # Search the log for "BUILD FAILED" to determine test status
-          if grep -q "BUILD FAILED" build/test-logs/test.log; then
-            echo "test_status=failed" >> $GITHUB_ENV  # Set failure flag for subsequent steps
-          else
-            echo "test_status=passed" >> $GITHUB_ENV  # Set success flag for subsequent steps
-          fi
-        continue-on-error: true  # Allow workflow to continue even if the tests fail
+          ./gradlew test --info
+        if: always()
 
-      - name: Send Slack notification on test result (failure or success)
+      - name: Send Slack notification on test result
         run: |
-          if [ "$test_status" == "failed" ]; then
-            STATUS="Tests failed! Please check the details in the workflow logs."
-          else
+          if [ $? -eq 0 ]; then
             STATUS="Tests passed!"
+          else
+            STATUS="Tests failed! Please check the details in the workflow logs."
           fi
-          
-            # Send the Slack notification
           curl -X POST -H 'Content-type: application/json' --data "{\"text\":\"${STATUS}\"}" ${{ secrets.SLACK_WEBHOOK }}
-        if: always()  # Ensure this step runs even if the previous step failed
+        if: always()
 
 
       - name: Generate Allure report
