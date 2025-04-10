@@ -60,18 +60,27 @@ jobs:
       - name: Grant execute permission for gradlew
         run: chmod +x gradlew
 
-      - name: Run Tests and Notify Slack
+      - name: Run Tests
+        run: |
+          mkdir -p build/test-logs
+          ./gradlew test --info > build/test-logs/test.log 2>&1
+          echo $? > build/test-logs/test-status.txt
+        continue-on-error: true
+
+      - name: Send Slack notification on test result
         if: always()
         run: |
-          ./gradlew test --info
-          EXIT_CODE=$?
+          STATUS_CODE=$(cat build/test-logs/test-status.txt)
 
-          if [ $EXIT_CODE -eq 0 ]; then
-            STATUS="✅ Tests passed!"
+          if [ "$STATUS_CODE" -eq 0 ]; then
+            STATUS="✅ *Tests passed!*"
           else
-            STATUS="❌ Tests failed! Please check the workflow logs."
+            STATUS="❌ *Tests failed!* Please check the logs.*"
           fi
-          curl -X POST -H 'Content-type: application/json' --data "{\"text\":\"${STATUS}\"}" ${{ secrets.SLACK_WEBHOOK }} 
+
+          curl -X POST -H 'Content-type: application/json' \
+               --data "{\"text\":\"${STATUS}\"}" \
+               ${{ secrets.SLACK_WEBHOOK }}
 
       - name: Generate Allure report
         run: ./gradlew allureReport
