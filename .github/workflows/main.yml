@@ -88,7 +88,6 @@ jobs:
           curl -X POST -H 'Content-type: application/json' \
                --data "{\"text\":\"${STATUS}\"}" \
                ${{ secrets.SLACK_WEBHOOK }}
-      
 
       - name: Generate Allure report
         run: ./gradlew allureReport
@@ -108,4 +107,3 @@ jobs:
         with:
           files: |
             build/test-results/test/*.xml
-
