@@ -79,5 +79,12 @@ jobs:
         if: success() || failure()    # run this step even if previous step failed
         with:
           name: JEST Tests            # Name of the check run which will be created
-          path: build/test-results/test/jest-*.xml    # Path to test results
+          path: build/test-results/test/*.xml    # Path to test results
           reporter: jest-junit
+
+      # Notify authors if the tests fail
+      - name: Notify authors on test failure
+        if: failure()  # This step only runs if previous steps failed
+        run: |
+          echo "Tests have failed! Please check the details of the tests and fix any issues." \
+          | mail -s "Test Failure Notification" mogalemapaela@icloud.com
