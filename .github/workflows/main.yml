@@ -83,11 +83,16 @@ jobs:
 
       - name: Send Slack notification on test result (success or failure)
         run: |
-          # Check if any test failed by looking for a failure indicator in the test results.
-          if grep -q "FAILURE" build/test-results/test/*.xml; then
-            STATUS="Front End automation -> Tests failed! Please check the details in the workflow logs."
+          # Use xmllint or xmlstarlet to parse the XML files and check for <failure> tags in the test results.
+          FAILED_TESTS=$(xmllint --xpath "//testcase[failure]" build/test-results/test/*.xml | grep -oP '(?<=<testcase name=").*?(?=")' || true)
+
+          if [ -n "$FAILED_TESTS" ]; then
+            # If there are failing tests, create a list and send a failure notification with test names
+            STATUS="Front End automation -> Tests failed! The following tests failed:\n$FAILED_TESTS\nPlease check the details in the workflow logs."
           else
+            # If no failing tests, send a success notification
             STATUS="Front End automation -> Tests passed!"
           fi
-          curl -X POST -H 'Content-type: application/json' --data "{\"text\":\"${STATUS}\"}" ${{ secrets.SLACK_WEBHOOK }}
 
+          # Send the Slack notification
+          curl -X POST -H 'Content-type: application/json' --data "{\"text\":\"${STATUS}\"}" ${{ secrets.SLACK_WEBHOOK }}
