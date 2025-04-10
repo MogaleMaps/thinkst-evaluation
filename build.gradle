@@ -1,7 +1,8 @@
 plugins {
-    id "java"
-    id "org.springframework.boot" version "2.5.4" // Add Spring Boot plugin for Jest support if needed
+    id("java")
+    id "io.qameta.allure" version "2.9.6"
 }
+
 
 java {
     sourceCompatibility = JavaVersion.VERSION_11
@@ -13,30 +14,28 @@ version = "1.0-SNAPSHOT"
 
 repositories {
     mavenCentral()
-    jcenter()
+}
+
+allure {
+    autoconfigure = true
 }
 
 dependencies {
-    // JUnit Jupiter (Jest) dependencies
-    testImplementation platform('org.junit:junit-bom:5.9.1')
+    implementation 'org.testng:testng:7.1.0'
+    testImplementation(platform('org.junit:junit-bom:5.9.1'))
     testImplementation('org.junit.jupiter:junit-jupiter')
-    testImplementation('org.junit.jupiter:junit-jupiter-api:5.8.2')
-    testImplementation('org.junit.jupiter:junit-jupiter-engine:5.8.2')
-    testRuntimeOnly 'org.junit.platform:junit-platform-launcher:1.8.2'
-
-    // Jest Test Reporter dependency
-    testImplementation 'org.junit.jupiter:junit-jupiter-api:5.8.2'
-    testImplementation 'org.junit.jupiter:junit-jupiter-engine:5.8.2'
-
-    // Selenium dependencies
     implementation 'org.seleniumhq.selenium:selenium-java:4.23.0'
     implementation 'org.seleniumhq.selenium:selenium-remote-driver:4.23.0'
-
-    // Logging dependencies
-    implementation 'org.apache.logging.log4j:log4j-slf4j-impl:2.1'
+    testImplementation 'org.testng:testng:7.10.2'
+    implementation("io.qameta.allure:allure-maven:2.8")
+    implementation("org.apache.logging.log4j:log4j-slf4j-impl:2.1")
+    implementation group: 'io.qameta.allure', name: 'allure-testng', version: '2.13.3'
+    testImplementation 'org.junit.jupiter:junit-jupiter-api:5.8.2'
+    testImplementation 'org.junit.jupiter:junit-jupiter-engine:5.8.2'
+    testRuntimeOnly 'org.junit.platform:junit-platform-launcher:1.8.2'
 }
 
-testReportDirName = "${buildDir}/test-results" // Set the directory where Jest will store the test results
+testReportDirName = "${buildDir}/test-output"
 
 sourceSets {
     test {
@@ -46,31 +45,17 @@ sourceSets {
     }
 }
 
+
 test {
     useJUnitPlatform()
+    useTestNG() {
+        useDefaultListeners = true
+    }
 
-    // Set up Jest testing framework (if using Jest on Node.js)
-    // Add Jest execution configuration if you're running tests from a Node.js app
-    systemProperty "jest.node", "true" // Example to specify node.js environment
+    def browser = project.hasProperty("browser") ? project.property("browser") : "chrome"
+    systemProperty "browser", browser
 
-    // Configure test logging
     testLogging {
         events "passed", "failed", "skipped"
-        exceptionFormat "full"
-    }
-
-    // Test reporting with Jest, if using Node.js environment, make sure Jest is installed in the project
-    afterTest { desc, result ->
-        if (result.failed) {
-            println "Test failed: ${desc.displayName}"
-        }
     }
 }
-
-// Add Jest to the project (assuming you're running Jest from a Node.js environment)
-task runJestTests(type: Exec) {
-    commandLine "npm", "run", "test" // Make sure Jest is installed and tests are defined
-}
-
-// Automatically run Jest tests as part of the build
-build.dependsOn runJestTests
