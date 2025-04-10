@@ -61,7 +61,26 @@ jobs:
         run: chmod +x gradlew
 
       - name: Run Tests
-        run: ./gradlew test --info || true
+        run: |
+          ./gradlew test --info || true
+           # Check the status of the previous command
+          if [ $? -ne 0 ]; then
+          echo "Tests failed"
+          echo "test_status=failed" >> $GITHUB_ENV  # Set environment variable to mark failure
+          else
+          echo "Tests passed"
+          echo "test_status=passed" >> $GITHUB_ENV  # Set environment variable to mark success
+          fi
+
+      - name: Send Slack notification on test result (success or failure)
+        run: |
+          if [ $? -eq 0 ]; then
+            STATUS="Front End automation ->  Tests passed!"
+          else
+            STATUS="Tests failed! Please check the details in the workflow logs."
+          fi
+          curl -X POST -H 'Content-type: application/json' --data "{\"text\":\"${STATUS}\"}" ${{ secrets.SLACK_WEBHOOK }}
+
 
       - name: Generate Allure report
         run: ./gradlew allureReport
@@ -81,18 +100,3 @@ jobs:
           files: |
             build/test-results/test/*.xml
 
-      - name: Send Slack notification on test result (success or failure)
-        run: |
-          # Use xmllint or xmlstarlet to parse the XML files and check for <failure> tags in the test results.
-          FAILED_TESTS=$(xmllint --xpath "//testcase[failure]" build/test-results/test/*.xml | grep -oP '(?<=<testcase name=").*?(?=")' || true)
-
-          if [ -n "$FAILED_TESTS" ]; then
-            # If there are failing tests, create a list and send a failure notification with test names
-            STATUS="Front End automation -> Tests failed! The following tests failed:\n$FAILED_TESTS\nPlease check the details in the workflow logs."
-          else
-            # If no failing tests, send a success notification
-            STATUS="Front End automation -> Tests passed!"
-          fi
-
-          # Send the Slack notification
-          curl -X POST -H 'Content-type: application/json' --data "{\"text\":\"${STATUS}\"}" ${{ secrets.SLACK_WEBHOOK }}
