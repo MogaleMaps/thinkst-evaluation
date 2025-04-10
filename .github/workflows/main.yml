@@ -62,29 +62,21 @@ jobs:
 
       - name: Run Tests
         run: |
-          ./gradlew test --info > build/test-logs/test.log 2>&1 || true  # Continue even if tests fail
-          if grep -q "BUILD FAILED" build/test-logs/test.log; then
-            echo "BUILD FAILED detected"
-            echo "test_status=failed" >> $GITHUB_ENV  # Set failure flag for subsequent steps
-          else
-            echo "Tests passed"
-            echo "test_status=passed" >> $GITHUB_ENV  # Set success flag for subsequent steps
-          fi
+          ./gradlew test --info 
 
-
-      - name: Send Slack notification on test result (success or failure)
+      - name: Send Slack notification on test result
         run: |
-          if [ "$test_status" == "failed" ]; then
-           STATUS="Tests failed! Please check the details in the workflow logs."
+          if [ $? -eq 0 ]; then
+            STATUS="Tests passed!"
           else
-           STATUS="Tests passed!"
+            STATUS="Tests failed! Please check the details in the workflow logs."
           fi
           curl -X POST -H 'Content-type: application/json' --data "{\"text\":\"${STATUS}\"}" ${{ secrets.SLACK_WEBHOOK }}
+        if: always()
 
 
       - name: Generate Allure report
         run: ./gradlew allureReport
-
 
       - name: Upload Artifact
         uses: actions/upload-artifact@v4
