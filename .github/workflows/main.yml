@@ -71,7 +71,7 @@ jobs:
           else
             echo "test_status=passed" >> $GITHUB_ENV  # Set success flag for subsequent steps
           fi
-          continue-on-error: true  # Allow workflow to continue even if the tests fail
+        continue-on-error: true  # Allow workflow to continue even if the tests fail
 
       - name: Send Slack notification on test result (failure or success)
         run: |
