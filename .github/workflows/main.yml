@@ -62,15 +62,22 @@ jobs:
 
       - name: Run Tests
         run: |
-          mkdir -p build/test-logs
-          ./gradlew test --info > build/test-logs/test.log 2>&1
-          echo $? > build/test-logs/test-status.txt
+          mkdir -p ${{ github.workspace }}/build/test-logs
+          ./gradlew test --info > ${{ github.workspace }}/build/test-logs/test.log 2>&1
+          echo "$?" > ${{ github.workspace }}/build/test-logs/test-status.txt
         continue-on-error: true
+
 
       - name: Send Slack notification on test result
         if: always()
         run: |
-          STATUS_CODE=$(cat build/test-logs/test-status.txt)
+          STATUS_FILE="${{ github.workspace }}/build/test-logs/test-status.txt"
+
+          if [ -f "$STATUS_FILE" ]; then
+            STATUS_CODE=$(cat "$STATUS_FILE")
+          else
+            STATUS_CODE=1  # Fail-safe fallback
+          fi
 
           if [ "$STATUS_CODE" -eq 0 ]; then
             STATUS="✅ *Tests passed!*"
@@ -81,6 +88,7 @@ jobs:
           curl -X POST -H 'Content-type: application/json' \
                --data "{\"text\":\"${STATUS}\"}" \
                ${{ secrets.SLACK_WEBHOOK }}
+      
 
       - name: Generate Allure report
         run: ./gradlew allureReport
