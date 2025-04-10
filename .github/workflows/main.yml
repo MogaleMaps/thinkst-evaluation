@@ -20,7 +20,7 @@ jobs:
           # Install yarn via brew
           brew install yarn
 
-      - name: Install Node.js 14.x and Yarn
+      - name: Install Node.js and Yarn
         run: |
           # Install Node.js 14.x (latest stable)
           curl -sL https://deb.nodesource.com/setup_16.x | sudo -E bash -
