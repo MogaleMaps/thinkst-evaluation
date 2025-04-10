@@ -65,12 +65,13 @@ jobs:
 
       - name: Send Slack notification on test result (success or failure)
         run: |
-            if [ $? -eq 0 ]; then
-             STATUS="Tests passed!"
-            else
-              STATUS="Tests failed! Please check the details in the workflow logs."
-            fi
-            curl -X POST -H 'Content-type: application/json' --data '{"text":"${STATUS}\"}' ${{ secrets.SLACK_WEBHOOK }}
+          if [ $? -eq 0 ]; then
+            STATUS="Tests passed!"
+          else
+            STATUS="Tests failed! Please check the details in the workflow logs."
+          fi
+          curl -X POST -H 'Content-type: application/json' --data "{\"text\":\"${STATUS}\"}" ${{ secrets.SLACK_WEBHOOK_URL }}
+
 
       - name: Generate Allure report
         run: ./gradlew allureReport
