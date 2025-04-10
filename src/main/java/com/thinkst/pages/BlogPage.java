@@ -12,11 +12,11 @@ import org.openqa.selenium.support.ui.WebDriverWait;
 
 import java.time.Duration;
 
-public class LandingPage extends Base {
+public class BlogPage extends Base {
 
     WebDriverWait wait;
 
-    public LandingPage(RemoteWebDriver driver) {
+    public BlogPage(RemoteWebDriver driver) {
         PageFactory.initElements(driver, this);
         wait = new WebDriverWait(driver, Duration.ofSeconds(10));
     }
@@ -37,6 +37,12 @@ public class LandingPage extends Base {
 
     @FindBy(how = How.CSS, using = "a[href='#/articles/test']")
     public WebElement articleLink;
+
+    @FindBy(how = How.XPATH, using = "//*[@id='app']/nav/div/ul/li[4]/a")
+    public WebElement usernameLink;
+
+    @FindBy(how = How.XPATH, using = "//*[@id='app']/div/div[2]/div/div/div[1]/ul/li[2]/a")
+    public WebElement favoritesLink;
 
     @FindBy(how = How.XPATH, using = "//*[@id='app']/div/div/div/div/form/fieldset[1]/input")
     public WebElement usernameTextBox;
@@ -195,4 +201,13 @@ public class LandingPage extends Base {
     public void enterTagTitle() {
         wait.until(ExpectedConditions.visibilityOf(popularTagsSearchTextBox)).sendKeys("Test Automation");
     }
+
+    public void clickUsername() {
+        wait.until(ExpectedConditions.visibilityOf(usernameLink)).click();
+    }
+
+    public void clickFavorites() {
+        wait.until(ExpectedConditions.visibilityOf(favoritesLink)).click();
+    }
+
 }
