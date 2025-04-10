@@ -70,7 +70,7 @@ jobs:
             else
               STATUS="Tests failed! Please check the details in the workflow logs."
             fi
-            curl -X POST -H 'Content-type: application/json' --data '{"text":"${STATUS}\"}' https://hooks.slack.com/services/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
+            curl -X POST -H 'Content-type: application/json' --data '{"text":"${STATUS}\"}' ${{ secrets.SLACK_WEBHOOK }}
 
       - name: Generate Allure report
         run: ./gradlew allureReport
