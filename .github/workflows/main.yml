@@ -62,22 +62,22 @@ jobs:
 
       - name: Run Tests
         run: |
-          ./gradlew test --info || true  # Continue even if tests fail
-          if [ $? -ne 0 ]; then
-            echo "Tests failed"
-            echo "test_status=failed" >> $GITHUB_ENV  # Set failure flag
-            exit 1  # Mark this step as failed
+          ./gradlew test --info > build/test-logs/test.log 2>&1 || true  # Continue even if tests fail
+          if grep -q "BUILD FAILED" build/test-logs/test.log; then
+            echo "BUILD FAILED detected"
+            echo "test_status=failed" >> $GITHUB_ENV  # Set failure flag for subsequent steps
           else
             echo "Tests passed"
-            echo "test_status=passed" >> $GITHUB_ENV  # Set success flag
+            echo "test_status=passed" >> $GITHUB_ENV  # Set success flag for subsequent steps
           fi
+
 
       - name: Send Slack notification on test result (success or failure)
         run: |
-          if [ $? -eq 0 ]; then
-            STATUS="Front End automation ->  Tests passed!"
+          if [ "$test_status" == "failed" ]; then
+           STATUS="Tests failed! Please check the details in the workflow logs."
           else
-            STATUS="Tests failed! Please check the details in the workflow logs."
+           STATUS="Tests passed!"
           fi
           curl -X POST -H 'Content-type: application/json' --data "{\"text\":\"${STATUS}\"}" ${{ secrets.SLACK_WEBHOOK }}
 
