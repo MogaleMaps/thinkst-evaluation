@@ -63,16 +63,6 @@ jobs:
       - name: Run Tests
         run: ./gradlew test --info || true
 
-      - name: Send Slack notification on test result (success or failure)
-        run: |
-          if [ $? -eq 0 ]; then
-            STATUS="Front End automation ->  Tests passed!"
-          else
-            STATUS="Tests failed! Please check the details in the workflow logs."
-          fi
-          curl -X POST -H 'Content-type: application/json' --data "{\"text\":\"${STATUS}\"}" ${{ secrets.SLACK_WEBHOOK }}
-
-
       - name: Generate Allure report
         run: ./gradlew allureReport
 
@@ -90,4 +80,14 @@ jobs:
         with:
           files: |
             build/test-results/test/*.xml
+
+      - name: Send Slack notification on test result (success or failure)
+        run: |
+          # Check if any test failed by looking for a failure indicator in the test results.
+          if grep -q "FAILURE" build/test-results/test/*.xml; then
+            STATUS="Front End automation -> Tests failed! Please check the details in the workflow logs."
+          else
+            STATUS="Front End automation -> Tests passed!"
+          fi
+          curl -X POST -H 'Content-type: application/json' --data "{\"text\":\"${STATUS}\"}" ${{ secrets.SLACK_WEBHOOK }}
 
