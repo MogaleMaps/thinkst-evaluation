@@ -73,7 +73,7 @@ jobs:
             STATUS="Tests failed! Please check the details in the workflow logs."
           fi
           curl -X POST -H 'Content-type: application/json' --data "{\"text\":\"${STATUS}\"}" ${{ secrets.SLACK_WEBHOOK }}
-        if: always()
+        
 
 
       - name: Generate Allure report
