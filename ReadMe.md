@@ -13,7 +13,7 @@
 - Import the project into IntelliJ by selecting the build.gradle file and click open as project
 
 ## Running the test
-- Go to src > test > java > test.gk > tests > checkoutTest.
+- Go to src > test > main > java > com.thinkst > tests > blogTests.
 - Click the green play icon on next to the @Test annotation.
 
 ## Notes
