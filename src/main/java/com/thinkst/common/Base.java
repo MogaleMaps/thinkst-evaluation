@@ -1,10 +1,12 @@
 package com.thinkst.common;
 
+import com.thinkst.pages.LoginPage;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.chrome.ChromeOptions;
 import org.openqa.selenium.firefox.FirefoxDriver;
 import org.openqa.selenium.firefox.FirefoxOptions;
 import org.openqa.selenium.remote.RemoteWebDriver;
+import org.testng.Assert;
 import org.testng.annotations.AfterMethod;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Optional;
@@ -16,31 +18,31 @@ import java.util.Properties;
 
 public class Base {
 
-    public static RemoteWebDriver driver;
-
+    private static ThreadLocal<RemoteWebDriver> driver = new ThreadLocal<>();
     FileReader reader;
     Properties properties;
     protected String url;
 
+    TestData data = new TestData();
+
     public static RemoteWebDriver getDriver() {
-        return driver;
+        return driver.get();
     }
 
     @Parameters("browser")
     @BeforeMethod
-    public void setup(@Optional("chrome") String browser) throws IOException {
+    public void setup(String browser) throws IOException {
         if (browser.equalsIgnoreCase("chrome")) {
             ChromeOptions options = new ChromeOptions();
-            options.addArguments("--headless=new");
             options.addArguments("--start-maximized");
-            driver = new ChromeDriver(options);
+            options.addArguments("--headless=new");
+            driver.set(new ChromeDriver(options));
 
         } else if (browser.equalsIgnoreCase("firefox")) {
             FirefoxOptions options = new FirefoxOptions();
+            options.addArguments("--start-maximized");
             options.addArguments("--headless");
-            options.addArguments("--width=1920");
-            options.addArguments("--height=1080");
-            driver = new FirefoxDriver(options);
+            driver.set(new FirefoxDriver(options));
 
         } else {
             throw new IllegalArgumentException("Unsupported browser: " + browser);
@@ -53,18 +55,27 @@ public class Base {
     public void readProperties() throws IOException {
         reader = new FileReader("config.properties");
         properties = new Properties();
-
         properties.load(reader);
         url = properties.getProperty("url");
         reader.close();
     }
 
     public void goToUrl() {
-        driver.get(url);
+        getDriver().get(url);
+    }
+
+    public void loginSuccessfully() {
+        LoginPage loginPage = new LoginPage(getDriver());
+        loginPage.clickSignIn();
+        loginPage.enterEmailAddress(data.existingUser, loginPage.signInEmailAddressTextbox);
+        loginPage.enterPassword(data.existingPassword, loginPage.signInPasswordTextBox);
+        loginPage.clickSignInButton();
+        Assert.assertTrue(loginPage.verifyElementIsDisplayed(loginPage.settingsButton));
     }
 
     @AfterMethod(alwaysRun = true)
     public void quitDriver() {
-        driver.quit();
+        getDriver().quit();
+        driver.remove();
     }
 }

@@ -76,7 +76,7 @@ jobs:
       - name: Run Tests
         run: |
           mkdir -p ${{ github.workspace }}/build/test-logs
-          ./gradlew test --info > ${{ github.workspace }}/build/test-logs/test.log 2>&1
+          ./gradlew testAllBrowsers --info > ${{ github.workspace }}/build/test-logs/test.log 2>&1
           echo "$?" > ${{ github.workspace }}/build/test-logs/test-status.txt
         continue-on-error: true
 

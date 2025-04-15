@@ -12,58 +12,21 @@ import org.openqa.selenium.support.ui.WebDriverWait;
 
 import java.time.Duration;
 
-public class BlogPage extends Base {
+public class NewArticlesPage extends Base {
 
     WebDriverWait wait;
 
-    public BlogPage(RemoteWebDriver driver) {
+    public NewArticlesPage(RemoteWebDriver driver) {
         PageFactory.initElements(driver, this);
         wait = new WebDriverWait(driver, Duration.ofSeconds(10));
     }
 
     TestData data = new TestData();
-    @FindBy(how = How.CSS, using = "a[href='#/login']")
-    public WebElement signInLink;
-    @FindBy(how = How.CSS, using = "a[href='#/']")
-    public WebElement homeButton;
-    @FindBy(how = How.CSS, using = "a[href='#/register']")
-    public WebElement signUpLink;
-
-    @FindBy(how = How.CSS, using = "a[href='#/settings']")
-    public WebElement settingsButton;
-
     @FindBy(how = How.CSS, using = "a[href='#/editor']")
     public WebElement newArticleLink;
 
     @FindBy(how = How.CSS, using = "a[href='#/articles/test']")
     public WebElement articleLink;
-
-    @FindBy(how = How.XPATH, using = "//*[@id='app']/nav/div/ul/li[4]/a")
-    public WebElement usernameLink;
-
-    @FindBy(how = How.XPATH, using = "//*[@id='app']/div/div[2]/div/div/div[1]/ul/li[2]/a")
-    public WebElement favoritesLink;
-
-    @FindBy(how = How.XPATH, using = "//*[@id='app']/div/div/div/div/form/fieldset[1]/input")
-    public WebElement usernameTextBox;
-
-    @FindBy(how = How.XPATH, using = "//*[@id='app']/div/div/div/div/form/fieldset[2]/input")
-    public WebElement signUpEmailAddressTextBox;
-
-    @FindBy(how = How.XPATH, using = "//*[@id='app']/div/div/div/div/form/fieldset[1]/input")
-    public WebElement signInEmailAddressTextbox;
-
-    @FindBy(how = How.XPATH, using = "//*[@id='app']/div/div/div/div/form/fieldset[2]/input")
-    public WebElement signInPasswordTextBox;
-
-    @FindBy(how = How.XPATH, using = "//*[@id='app']/div/div/div/div/form/fieldset[3]/input")
-    public WebElement passwordTextbox;
-
-    @FindBy(how = How.XPATH, using = "//*[@id='app']/div/div/div/div/form/button")
-    public WebElement signUpButton;
-
-    @FindBy(how = How.XPATH, using = "//*[@id='app']/div/div/div/div/form/button")
-    public WebElement signInButton;
 
     @FindBy(how = How.XPATH, using = "//*[@id='app']/div/div/div/div/form/fieldset/fieldset[1]/input")
     public WebElement articleTitleTextbox;
@@ -90,21 +53,8 @@ public class BlogPage extends Base {
 
     @FindBy(how = How.XPATH, using = "//*[@id='app']/div/div[2]/div[3]/div/div[2]/div[1]/p")
     public WebElement commentFooter;
-
-    @FindBy(how = How.XPATH, using = "//*[@id='app']/div/div/div/div/ul")
-    public WebElement errorLabel;
-
     @FindBy(how = How.XPATH, using = "//*[@id='app']/div/div[2]/div[3]/div/div[2]/div[2]/span[2]/i")
     public WebElement deleteCommentIcon;
-
-    @FindBy(how = How.XPATH, using = "//*[@id='app']/div/div/div/div/button")
-    public WebElement logoutButton;
-
-    @FindBy(how = How.XPATH, using = "//*[@id='app']/div/div[2]/div/div[1]/div[2]/div/div/div[1]/div/button")
-    public WebElement likeButton;
-
-    @FindBy(how = How.XPATH, using = "//*[@id='app']/div/div[2]/div/div[2]/div/p")
-    public WebElement popularTagsSearchTextBox;
 
     public boolean verifyElementIsDisplayed(WebElement element) {
         try {
@@ -112,30 +62,6 @@ public class BlogPage extends Base {
         } catch (Exception e) {
             return false;
         }
-    }
-
-    public void clickSignUp(WebElement element) {
-        wait.until(ExpectedConditions.elementToBeClickable(element)).click();
-    }
-
-    public void clickSignInButton() {
-        wait.until(ExpectedConditions.elementToBeClickable(signInButton)).click();
-    }
-
-    public void clickSignIn() {
-        wait.until(ExpectedConditions.elementToBeClickable(signInLink)).click();
-    }
-
-    public void enterUsername(String username) {
-        wait.until(ExpectedConditions.elementToBeClickable(usernameTextBox)).sendKeys(username);
-    }
-
-    public void enterEmailAddress(String email, WebElement element) {
-        wait.until(ExpectedConditions.elementToBeClickable(element)).sendKeys(email);
-    }
-
-    public void enterPassword(String password, WebElement element) {
-        wait.until(ExpectedConditions.elementToBeClickable(element)).sendKeys(password);
     }
 
     public void clickNewArticle() {
@@ -180,34 +106,6 @@ public class BlogPage extends Base {
 
     public void deleteComment() {
         wait.until(ExpectedConditions.visibilityOf(deleteCommentIcon)).click();
-    }
-
-    public void clickSettings() {
-        wait.until(ExpectedConditions.visibilityOf(settingsButton)).click();
-    }
-
-    public void clickLogout() {
-        wait.until(ExpectedConditions.visibilityOf(logoutButton)).click();
-    }
-
-    public void clickLikeButton() {
-        wait.until(ExpectedConditions.visibilityOf(likeButton)).click();
-    }
-
-    public boolean isValidationMessageDisplayed() {
-        return wait.until(ExpectedConditions.visibilityOf(errorLabel)).getText().contains("body User not found");
-    }
-
-    public void enterTagTitle() {
-        wait.until(ExpectedConditions.visibilityOf(popularTagsSearchTextBox)).sendKeys("Test Automation");
-    }
-
-    public void clickUsername() {
-        wait.until(ExpectedConditions.visibilityOf(usernameLink)).click();
-    }
-
-    public void clickFavorites() {
-        wait.until(ExpectedConditions.visibilityOf(favoritesLink)).click();
     }
 
 }

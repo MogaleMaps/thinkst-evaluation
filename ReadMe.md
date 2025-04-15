@@ -13,9 +13,10 @@
 - Import the project into IntelliJ by selecting the build.gradle file and click open as project
 
 ## Running the test
-- Go to src > test > main > java > com.thinkst > tests > blogTests.
-- Click the green play icon on next to the @Test annotation.
+- Open terminal and paste the follow commands `./gradlew testAllBrowsers`
 
-## Notes
 
-- Tests can be run on multiple browsers by changing the @Optional value in Base.java to a browser of choice.
+## Supported Browsers
+
+- Chrome
+- Firefox
