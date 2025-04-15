@@ -118,9 +118,9 @@ jobs:
           mkdir -p build/test-logs
 
           echo "🚀 Running tests..."
-          ./gradlew testAllBrowsers --info > build/test-logs/test.log 2>&1
+          ./gradlew testAllBrowsers --info | tee build/test-logs/test.log 2>&1
           
-          if tail -n 1 build/test-logs/test.log | grep -q "BUILD SUCCESSFUL"; then
+          if grep -q "BUILD SUCCESSFUL" build/test-logs/test.log; then
             EXIT_CODE=0
           else
             EXIT_CODE=1
