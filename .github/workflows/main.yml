@@ -96,20 +96,18 @@ jobs:
       - name: Grant execute permission for gradlew
         run: chmod +x gradlew
 
-      - name: Run tests and capture status
+      - name: Run tests
         shell: bash
+        continue-on-error: true
         run: |
           mkdir -p build/test-logs
 
-          # Run Gradle test and capture the result without failing the step
+          echo "🚀 Running tests..."
           ./gradlew testAllBrowsers --info > build/test-logs/test.log 2>&1
           EXIT_CODE=$?
 
           echo "Gradle exit code: $EXIT_CODE"
           echo "$EXIT_CODE" > build/test-logs/test-status.txt
-
-          # Optionally, don't fail this step even if tests fail
-          exit 0
       
 
       - name: Send Slack notification on test result
