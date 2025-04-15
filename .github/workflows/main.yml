@@ -99,10 +99,9 @@ jobs:
       - name: Run tests
         continue-on-error: true
         run: |
-          mkdir -p build/test-logs
-
           echo "🚀 Running tests..."
-          ./gradlew testAllBrowsers --info > build/test-logs/test.log 2>&1
+          
+          ./gradlew testAllBrowsers 
 
       - name: Send Slack notification on test result
         if: always()
