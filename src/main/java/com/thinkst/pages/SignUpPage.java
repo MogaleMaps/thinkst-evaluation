@@ -49,6 +49,10 @@ public class SignUpPage extends Base {
     public void clickSignUp() {
         wait.until(ExpectedConditions.elementToBeClickable(signUpButton)).click();
     }
+
+    public void clickSignUpLink() {
+        wait.until(ExpectedConditions.elementToBeClickable(signUpLink)).click();
+    }
     public void enterUsername(String username) {
         wait.until(ExpectedConditions.elementToBeClickable(usernameTextBox)).sendKeys(username);
     }

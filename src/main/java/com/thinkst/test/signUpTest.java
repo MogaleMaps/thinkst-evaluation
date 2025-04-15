@@ -22,7 +22,7 @@ public class signUpTest extends Base {
     @Description("A passing positive test- Verify that users can successfully sign up")
     public void signUpSuccessfully()  {
         SignUpPage SignUpPage = new SignUpPage(getDriver());
-        SignUpPage.clickSignUp();
+        SignUpPage.clickSignUpLink();
         SignUpPage.enterUsername(data.username);
         SignUpPage.enterEmailAddress(data.emailaddress, SignUpPage.signUpEmailAddressTextBox);
         SignUpPage.enterPassword(data.password, SignUpPage.passwordTextbox);
