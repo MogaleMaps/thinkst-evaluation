@@ -104,9 +104,10 @@ jobs:
 
           echo "🚀 Running tests..."
           ./gradlew testAllBrowsers --info > build/test-logs/test.log 2>&1
-          EXIT_CODE=$?
-
-          echo "Gradle exit code: $EXIT_CODE"
+          echo $?
+          
+          EXIT_CODE=$(tail -n 1 build/test-logs/test.log | grep -q "BUILD SUCCESSFUL" && echo 0 || echo 1)
+          echo "Gradle detected exit code: $EXIT_CODE"
           echo "$EXIT_CODE" > build/test-logs/test-status.txt
       
 
