@@ -98,15 +98,6 @@ jobs:
             echo "❌ Installation failed after $MAX_RETRIES attempts."
             exit 1
           fi
-      
-
-      - name: Verify Firefox and GeckoDriver
-        run: |
-          echo "🧪 Verifying Firefox and GeckoDriver installation..."
-          which firefox
-          firefox --version
-          geckodriver --version
-
 
       - name: Grant execute permission for gradlew
         run: chmod +x gradlew
@@ -141,9 +132,9 @@ jobs:
           fi
 
           if [ "$STATUS_CODE" -eq 0 ]; then
-            STATUS="✅ *Tests passed! - "
+            STATUS="✅ Tests passed! - "
           else
-            STATUS="❌ *Tests failed!* Please check test results. - "
+            STATUS="❌ Tests failed!* Please check test results. - "
           fi
 
           RESULTS_URL="${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}"
@@ -175,5 +166,4 @@ jobs:
         if: always()
         with:
           files: |
-            build/test-results/testChrome/*.xml
-            build/test-results/testFirefox/*.xml
+            build/test-results/**/*.xml
