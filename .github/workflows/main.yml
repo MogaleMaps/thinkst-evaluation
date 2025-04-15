@@ -73,7 +73,7 @@ jobs:
       - name: Grant execute permission for gradlew
         run: chmod +x gradlew
 
-      - name: Run Tests
+      - name: Run Tests on Chrome and Firefox
         run: |
           mkdir -p ${{ github.workspace }}/build/test-logs
           ./gradlew testAllBrowsers --info > ${{ github.workspace }}/build/test-logs/test.log 2>&1
@@ -119,4 +119,5 @@ jobs:
         if: always()
         with:
           files: |
-            build/test-results/test/*.xml
+            build/test-results/testChrome/*.xml
+            build/test-results/testFirefox/*.xml
