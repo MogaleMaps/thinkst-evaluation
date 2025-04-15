@@ -120,4 +120,3 @@ jobs:
         with:
           files: |
             build/test-results/testChrome/*.xml
-            build/test-results/testFirefox/*.xml
