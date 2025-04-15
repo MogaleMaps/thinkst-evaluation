@@ -99,15 +99,16 @@ jobs:
           fi
 
           RESULTS_URL="${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}"
-          MESSAGE="${STATUS} \n📄 <${RESULTS_URL}|View Test Results on GitHub Actions>"
-          
+          SLACK_MESSAGE="${STATUS}\n📄 <${RESULTS_URL}|View Test Results on GitHub Actions>"
+
           echo "Sending Slack message: $SLACK_MESSAGE"
 
           PAYLOAD=$(jq -n --arg text "$SLACK_MESSAGE" '{text: $text}')
-          
+
           curl -X POST -H 'Content-type: application/json' \
-               --data "$PAYLOAD" \"{\"text\":\"${STATUS}\"}" \
+               --data "$PAYLOAD" \
                ${{ secrets.SLACK_WEBHOOK }}
+      
 
       - name: Generate Allure report
         run: ./gradlew allureReport
