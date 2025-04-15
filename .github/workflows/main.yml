@@ -61,47 +61,56 @@ jobs:
         run: |
           MAX_RETRIES=3
           RETRY_DELAY=5
-          
+          GECKODRIVER_VERSION="v0.33.0"
+
           for ((i=1; i<=MAX_RETRIES; i++)); do
             echo "🔄 Attempt $i to install Firefox and GeckoDriver..."
-          
+
             {
               # Update package list and install Firefox
               sudo apt-get update &&
               sudo apt-get install -y firefox &&
-          
-              # Get latest GeckoDriver version
-              GECKODRIVER_VERSION=$(curl -s https://api.github.com/repos/mozilla/geckodriver/releases/latest | grep 'tag_name' | cut -d\" -f4) &&
-          
-              # Download and extract
-              wget https://github.com/mozilla/geckodriver/releases/download/$GECKODRIVER_VERSION/geckodriver-$GECKODRIVER_VERSION-linux64.tar.gz &&
-              tar -xvzf geckodriver-$GECKODRIVER_VERSION-linux64.tar.gz &&
-          
+
+              # Download and install specific GeckoDriver version
+              wget https://github.com/mozilla/geckodriver/releases/download/${GECKODRIVER_VERSION}/geckodriver-${GECKODRIVER_VERSION}-linux64.tar.gz &&
+              tar -xvzf geckodriver-${GECKODRIVER_VERSION}-linux64.tar.gz &&
               chmod +x geckodriver &&
               sudo mv geckodriver /usr/local/bin/ &&
-          
+
+              # Verify installation
+              firefox --version &&
+              geckodriver --version &&
+
               echo "✅ Installation succeeded!"
             } && break
-          
+
             echo "⚠️ Attempt $i failed. Retrying in $RETRY_DELAY seconds..."
             sleep $RETRY_DELAY
-          done
-          
+            done
+
           if [ "$i" -gt "$MAX_RETRIES" ]; then
             echo "❌ Installation failed after $MAX_RETRIES attempts."
             exit 1
           fi
-      
+
 
       - name: Grant execute permission for gradlew
         run: chmod +x gradlew
 
       - name: Run tests
+        shell: bash
         continue-on-error: true
         run: |
+          mkdir -p build/test-logs
+
           echo "🚀 Running tests..."
+          ./gradlew testAllBrowsers --info > build/test-logs/test.log 2>&1
+          echo $?
           
-          ./gradlew testAllBrowsers 
+          EXIT_CODE=$(tail -n 1 build/test-logs/test.log | grep -q "BUILD SUCCESSFUL" && echo 0 || echo 1)
+          echo "Gradle detected exit code: $EXIT_CODE"
+          echo "$EXIT_CODE" > build/test-logs/test-status.txt
+      
 
       - name: Send Slack notification on test result
         if: always()

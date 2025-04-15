@@ -42,6 +42,8 @@ public class Base {
             FirefoxOptions options = new FirefoxOptions();
             options.addArguments("--start-maximized");
             options.addArguments("--headless");
+            options.addArguments("--no-sandbox");
+            options.addArguments("--disable-dev-shm-usage");
             driver.set(new FirefoxDriver(options));
 
         } else {
