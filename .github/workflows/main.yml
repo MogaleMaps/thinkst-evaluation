@@ -134,11 +134,11 @@ jobs:
           if [ "$STATUS_CODE" -eq 0 ]; then
             STATUS="✅ Tests passed! - "
           else
-            STATUS="❌ Tests failed!* Please check test results. - "
+            STATUS="❌ Tests failed! - "
           fi
 
           RESULTS_URL="${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}"
-          SLACK_MESSAGE="${STATUS}<${RESULTS_URL}|View Test Results on GitHub Actions>"
+          SLACK_MESSAGE="${STATUS}<${RESULTS_URL}|View Test Results>"
 
           echo "Sending Slack message: $SLACK_MESSAGE"
 
@@ -161,7 +161,7 @@ jobs:
           overwrite: true
         if: always()
 
-      - name: Publish Chrome Test Results
+      - name: Publish Test Results
         uses: EnricoMi/publish-unit-test-result-action@v2
         if: always()
         with:
