@@ -52,9 +52,6 @@ test {
         useDefaultListeners = true
     }
 
-   // def browser = project.hasProperty("browser") ? project.property("browser") : "firefox"
-    //systemProperty "browser", browser
-
     testLogging {
         events "passed", "failed", "skipped"
     }
