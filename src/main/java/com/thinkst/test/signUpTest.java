@@ -22,11 +22,11 @@ public class signUpTest extends Base {
     @Description("A passing positive test- Verify that users can successfully sign up")
     public void signUpSuccessfully()  {
         SignUpPage SignUpPage = new SignUpPage(getDriver());
-        SignUpPage.clickSignUp(SignUpPage.signUpLink);
+        SignUpPage.clickSignUp();
         SignUpPage.enterUsername(data.username);
         SignUpPage.enterEmailAddress(data.emailaddress, SignUpPage.signUpEmailAddressTextBox);
         SignUpPage.enterPassword(data.password, SignUpPage.passwordTextbox);
-        SignUpPage.clickSignUp(SignUpPage.signUpButton);
+        SignUpPage.clickSignUp();
         Assert.assertTrue(SignUpPage.verifyElementIsDisplayed(SignUpPage.settingsButton));
     }
 }
