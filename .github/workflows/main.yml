@@ -98,6 +98,9 @@ jobs:
             STATUS="❌ *Tests failed!* Please check test results.*"
           fi
 
+          RESULTS_URL="${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}"
+          MESSAGE="${STATUS} \n📄 <${RESULTS_URL}|View Test Results on GitHub Actions>"
+          
           curl -X POST -H 'Content-type: application/json' \
                --data "{\"text\":\"${STATUS}\"}" \
                ${{ secrets.SLACK_WEBHOOK }}
