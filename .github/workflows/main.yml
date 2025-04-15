@@ -115,10 +115,11 @@ jobs:
         shell: bash
         continue-on-error: true
         run: |
-          # mkdir -p build/test-logs
+          mkdir -p build/test-logs
 
           echo "🚀 Running tests..."
           ./gradlew testAllBrowsers --info > build/test-logs/test.log 2>&1
+          
           if tail -n 1 build/test-logs/test.log | grep -q "BUILD SUCCESSFUL"; then
             EXIT_CODE=0
           else
