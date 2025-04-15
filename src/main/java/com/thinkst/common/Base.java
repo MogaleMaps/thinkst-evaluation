@@ -40,6 +40,7 @@ public class Base {
 
         } else if (browser.equalsIgnoreCase("firefox")) {
             FirefoxOptions options = new FirefoxOptions();
+            options.setBinary("/usr/bin/firefox");
             options.addArguments("--start-maximized");
             options.addArguments("--headless");
             options.addArguments("--no-sandbox");

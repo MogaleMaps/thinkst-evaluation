@@ -13,7 +13,7 @@
 - Import the project into IntelliJ by selecting the build.gradle file and click open as project
 
 ## Running the test
-- Open terminal and paste the follow commands `./gradlew testAllBrowsers`
+- Open terminal and paste the following command `./gradlew testAllBrowsers`
 
 
 ## Supported Browsers

@@ -93,6 +93,13 @@ jobs:
             exit 1
           fi
 
+      - name: Verify Firefox and GeckoDriver
+        run: |
+          echo "🧪 Verifying Firefox and GeckoDriver installation..."
+          which firefox
+          firefox --version
+          geckodriver --version
+
 
       - name: Grant execute permission for gradlew
         run: chmod +x gradlew
