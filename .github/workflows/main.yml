@@ -59,16 +59,39 @@ jobs:
           
       - name: Install Firefox and GeckoDriver
         run: |
-          # Install Firefox
-          sudo apt-get update
-          sudo apt-get install -y firefox
-
-          # Install latest GeckoDriver
-          GECKODRIVER_VERSION=$(curl -s https://api.github.com/repos/mozilla/geckodriver/releases/latest | grep 'tag_name' | cut -d\" -f4)
-          wget https://github.com/mozilla/geckodriver/releases/download/$GECKODRIVER_VERSION/geckodriver-$GECKODRIVER_VERSION-linux64.tar.gz
-          tar -xvzf geckodriver-$GECKODRIVER_VERSION-linux64.tar.gz
-          chmod +x geckodriver
-          sudo mv geckodriver /usr/local/bin/
+          MAX_RETRIES=3
+          RETRY_DELAY=5
+          
+          for ((i=1; i<=MAX_RETRIES; i++)); do
+            echo "🔄 Attempt $i to install Firefox and GeckoDriver..."
+          
+            {
+              # Update package list and install Firefox
+              sudo apt-get update &&
+              sudo apt-get install -y firefox &&
+          
+              # Get latest GeckoDriver version
+              GECKODRIVER_VERSION=$(curl -s https://api.github.com/repos/mozilla/geckodriver/releases/latest | grep 'tag_name' | cut -d\" -f4) &&
+          
+              # Download and extract
+              wget https://github.com/mozilla/geckodriver/releases/download/$GECKODRIVER_VERSION/geckodriver-$GECKODRIVER_VERSION-linux64.tar.gz &&
+              tar -xvzf geckodriver-$GECKODRIVER_VERSION-linux64.tar.gz &&
+          
+              chmod +x geckodriver &&
+              sudo mv geckodriver /usr/local/bin/ &&
+          
+              echo "✅ Installation succeeded!"
+            } && break
+          
+            echo "⚠️ Attempt $i failed. Retrying in $RETRY_DELAY seconds..."
+            sleep $RETRY_DELAY
+          done
+          
+          if [ "$i" -gt "$MAX_RETRIES" ]; then
+            echo "❌ Installation failed after $MAX_RETRIES attempts."
+            exit 1
+          fi
+      
 
       - name: Grant execute permission for gradlew
         run: chmod +x gradlew
