@@ -116,13 +116,13 @@ jobs:
           fi
 
           if [ "$STATUS_CODE" -eq 0 ]; then
-            STATUS="✅ *Tests passed!*"
+            STATUS="✅ *Tests passed! - "
           else
-            STATUS="❌ *Tests failed!* Please check test results.*"
+            STATUS="❌ *Tests failed!* Please check test results. - "
           fi
 
           RESULTS_URL="${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}"
-          SLACK_MESSAGE="${STATUS}\<${RESULTS_URL}|View Test Results on GitHub Actions>"
+          SLACK_MESSAGE="${STATUS}<${RESULTS_URL}|View Test Results on GitHub Actions>"
 
           echo "Sending Slack message: $SLACK_MESSAGE"
 
