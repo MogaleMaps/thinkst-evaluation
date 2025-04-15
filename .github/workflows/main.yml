@@ -118,15 +118,15 @@ jobs:
           # mkdir -p build/test-logs
 
           echo "🚀 Running tests..."
-          ./gradlew testAllBrowsers --info 
+          ./gradlew testAllBrowsers --info > build/test-logs/test.log 2>&1
+          if tail -n 1 build/test-logs/test.log | grep -q "BUILD SUCCESSFUL"; then
+            EXIT_CODE=0
+          else
+            EXIT_CODE=1
+          fi
           
-          # > build/test-logs/test.log 2>&1
-          # echo $?
-          
-          # EXIT_CODE=$(tail -n 1 build/test-logs/test.log | grep -q "BUILD SUCCESSFUL" && echo 0 || echo 1)
-          # echo "Gradle detected exit code: $EXIT_CODE"
-          # echo "$EXIT_CODE" > build/test-logs/test-status.txt
-      
+          echo "Gradle detected exit code: $EXIT_CODE"
+          echo "$EXIT_CODE" > build/test-logs/test-status.txt      
 
       - name: Send Slack notification on test result
         if: always()
@@ -175,10 +175,4 @@ jobs:
         with:
           files: |
             build/test-results/testChrome/*.xml
-
-      - name: Publish Firefox Test Results
-        uses: EnricoMi/publish-unit-test-result-action@v2
-        if: always()
-        with:
-          files: |
             build/test-results/testFirefox/*.xml
