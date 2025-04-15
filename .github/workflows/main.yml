@@ -62,22 +62,28 @@ jobs:
           MAX_RETRIES=3
           RETRY_DELAY=5
           GECKODRIVER_VERSION="v0.33.0"
+          FIREFOX_VERSION="latest"
 
           for ((i=1; i<=MAX_RETRIES; i++)); do
-            echo "🔄 Attempt $i to install Firefox and GeckoDriver..."
+            echo "🔄 Attempt $i to install real Firefox and GeckoDriver..."
 
             {
-              # Update package list and install Firefox
-              sudo apt-get update &&
-              sudo apt-get install -y firefox &&
+              echo "🧹 Removing Snap Firefox if it exists..."
+              sudo snap remove firefox || true
 
-              # Download and install specific GeckoDriver version
+              echo "⬇️ Downloading Firefox from Mozilla..."
+              wget -O firefox.tar.bz2 "https://download.mozilla.org/?product=firefox-${FIREFOX_VERSION}-ssl&os=linux64&lang=en-US" &&
+              tar xjf firefox.tar.bz2 &&
+              sudo mv firefox /opt/firefox &&
+              sudo ln -sf /opt/firefox/firefox /usr/local/bin/firefox &&
+
+              echo "⬇️ Downloading GeckoDriver ${GECKODRIVER_VERSION}..."
               wget https://github.com/mozilla/geckodriver/releases/download/${GECKODRIVER_VERSION}/geckodriver-${GECKODRIVER_VERSION}-linux64.tar.gz &&
               tar -xvzf geckodriver-${GECKODRIVER_VERSION}-linux64.tar.gz &&
               chmod +x geckodriver &&
               sudo mv geckodriver /usr/local/bin/ &&
 
-              # Verify installation
+              echo "🧪 Verifying installations..."
               firefox --version &&
               geckodriver --version &&
 
@@ -86,12 +92,13 @@ jobs:
 
             echo "⚠️ Attempt $i failed. Retrying in $RETRY_DELAY seconds..."
             sleep $RETRY_DELAY
-            done
+          done
 
           if [ "$i" -gt "$MAX_RETRIES" ]; then
             echo "❌ Installation failed after $MAX_RETRIES attempts."
             exit 1
           fi
+      
 
       - name: Verify Firefox and GeckoDriver
         run: |
