@@ -34,7 +34,7 @@ public class landingTests extends Base {
     }
 
     //TODO: BUG: Users cannot filter by Popular Tags, enable test once bug is fixed!
-    @Test(enabled = false)
+    @Test(enabled = true)
     @Description("Failing positive test -- Verify that users are able to filter posts by clicking on 'Popular Tags'")
     public void filterByPopularTags() {
         loginSuccessfully();
